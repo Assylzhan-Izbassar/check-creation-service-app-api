@@ -1,7 +1,8 @@
 """
 All views for the application.
 """
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics \
+    import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .serializers import PrinterSerializer, CheckSerializer
 from .models import Printer, Check
 
