@@ -1,7 +1,9 @@
 """
 Creating base models for receipt API.
 """
+from email.policy import default
 from django.db import models
+from uuid import uuid4
 
 
 CHECK_TYPE_KITCHEN = 'kitchen'
@@ -14,8 +16,8 @@ CHECK_TYPE_CHOICES = [
 
 
 class Printer(models.Model):
+    api_key = models.CharField(max_length=255, primary_key=True, default=uuid4)
     name = models.CharField(max_length=255)
-    api_key = models.CharField(max_length=255, unique=True)
     check_type = models.CharField(
         max_length=7,
         choices=CHECK_TYPE_CHOICES,
@@ -25,7 +27,6 @@ class Printer(models.Model):
 
 
 class Check(models.Model):
-
     PRINTED_STATUS_PENDING = 'P'
     PRINTED_STATUS_COMPLETE = 'C'
     PRINTED_STATUS_FAILED = 'F'
@@ -47,8 +48,9 @@ class Check(models.Model):
         choices=PRINTED_STATUS_CHOICES,
         default=PRINTED_STATUS_PENDING,
     )
-    pdf_file = models.FileField(upload_to='media/pdf')
+    pdf_file = models.FileField()
     printer_id = models.ForeignKey(
         Printer,
+        null=True,
         on_delete=models.SET_NULL,
     )
