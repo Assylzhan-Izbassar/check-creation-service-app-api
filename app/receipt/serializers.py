@@ -9,6 +9,7 @@ class PrinterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Printer
         fields = [
+            'id',
             'api_key',
             'name',
             'check_type',
@@ -26,4 +27,6 @@ class CheckSerializer(serializers.ModelSerializer):
             'order',
             'status',
             'pdf_file',
+            'printer_id',
         ]
+        read_only_fields = ('pdf_file',)

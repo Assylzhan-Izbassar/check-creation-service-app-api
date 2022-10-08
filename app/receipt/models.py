@@ -15,7 +15,7 @@ CHECK_TYPE_CHOICES = [
 
 
 class Printer(models.Model):
-    api_key = models.CharField(max_length=255, primary_key=True, default=uuid4)
+    api_key = models.CharField(max_length=255, unique=True, default=uuid4)
     name = models.CharField(max_length=255)
     check_type = models.CharField(
         max_length=7,
@@ -23,6 +23,9 @@ class Printer(models.Model):
         default=CHECK_TYPE_CLIENT,
     )
     point_id = models.IntegerField()
+
+    def __str__(self):
+        return self.name + ' ' + self.api_key
 
 
 class Check(models.Model):

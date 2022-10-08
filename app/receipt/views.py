@@ -18,10 +18,10 @@ class PrinterDetail(RetrieveUpdateDestroyAPIView):
 
 
 class CheckList(ListCreateAPIView):
-    queryset = Check.objects.all()
+    queryset = Check.objects.select_related('printer_id').all()
     serializer_class = CheckSerializer
 
 
 class CheckDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Check.objects.all()
+    queryset = Check.objects.select_related('printer_id').all()
     serializer_class = CheckSerializer
