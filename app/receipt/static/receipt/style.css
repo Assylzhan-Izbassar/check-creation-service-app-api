@@ -1,0 +1,36 @@
+.wrapper {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* CHECK HEADER */
+
+.check__header {
+    text-align: center;
+}
+
+.check__header p {
+    text-transform: uppercase;
+}
+
+/* CHECK BODY */
+
+.check__products {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.check__item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.check__item p, h3, h4 {
+    margin: 5px 0 5px 0;
+}
+
+.check__item_left-margin h4 {
+    margin-left: 20px;
+    font-weight: 400;
+}

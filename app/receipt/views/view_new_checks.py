@@ -1,40 +1,42 @@
 """
 View for retrieving new checks and download them.
 """
-from email import header
-from wsgiref import headers
 import zipfile
-from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.response import Response
 from django.http import HttpResponse
 from receipt.models import Check
+from receipt.tasks import send_to_print
+
+
+FILE_ROOT_PATH = '/app/media/'
+FILE_NAME = 'app.zip'
 
 
 class NewChecks(APIView):
-    def get(self, request, id, format=None):
-        file_name = 'checks.zip'
-        new_checks = Check.objects.filter(printer_id=id, status='P')
+    def get(self, request, printer_id, format=None):
+        new_checks = Check.objects.filter(printer_id=printer_id, status='P')
+
+        if not new_checks:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         check_pdfs = []
         for check in new_checks:
             check_pdfs.append(check.pdf_file.name)
 
-        zf = file_compress(check_pdfs)
+        response = HttpResponse(content_type='application/zip')
 
-        response = HttpResponse(zf, headers={
-            'Content-Type': 'application/zip',
-            'Content-Disposition': 'attachment; filename="%s"' % file_name,
-        })
+        with zipfile.ZipFile(
+            response,
+            mode='w',
+            compression=zipfile.ZIP_DEFLATED
+        ) as archive:
+            for file in check_pdfs:
+                archive.write(FILE_ROOT_PATH + file)
+
+        response['Content-Disposition'] = f'attachment; filename={FILE_NAME}'
+
+        send_to_print.apply_async((printer_id,))
 
         return response
-
-
-def file_compress(files, output_zip='checks.zip'):
-    with zipfile.ZipFile(output_zip, mode='w') as archive:
-        for file in files:
-            archive.write(file)
-
-    with zipfile.ZipFile(output_zip, mode="r") as archive:
-        archive.printdir()
-    return archive

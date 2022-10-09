@@ -3,6 +3,7 @@ All model views for the application.
 """
 from rest_framework.generics \
     import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from django.shortcuts import get_object_or_404, render
 from receipt.serializers import PrinterSerializer, CheckSerializer
 from receipt.models import Printer, Check
 
@@ -25,5 +26,14 @@ class CheckList(ListCreateAPIView):
 class CheckDetail(RetrieveUpdateDestroyAPIView):
     queryset = Check.objects.select_related('printer_id').all()
     serializer_class = CheckSerializer
-    context_object_name = 'check'
-    template_name = 'checks/check_detail.html'
+
+    def get(self, request, pk, format=None):
+        """
+        Render a detail check.
+        """
+        check = get_object_or_404(Check, pk=pk)
+        return render(
+            request,
+            template_name='checks/check_detail.html',
+            context={'check': check}
+        )

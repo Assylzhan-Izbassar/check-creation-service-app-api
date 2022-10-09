@@ -54,7 +54,11 @@ class Check(models.Model):
         choices=PRINTED_STATUS_CHOICES,
         default=PRINTED_STATUS_PENDING,
     )
-    pdf_file = models.FileField(null=True, blank=True)
+    pdf_file = models.FileField(
+        upload_to='media',
+        null=True,
+        blank=True
+    )
     printer_id = models.ForeignKey(
         Printer,
         null=True,

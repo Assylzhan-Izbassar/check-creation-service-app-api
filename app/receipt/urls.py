@@ -11,5 +11,8 @@ urlpatterns = [
     path('checks/', view_models.CheckList.as_view()),
     path('checks/<int:pk>/', view_models.CheckDetail.as_view()),
     path('checks/create_pdf/', view_receive.ReceiveOrder.as_view()),
-    path('checks/<int:id>/download/', view_new_checks.NewChecks.as_view()),
+    path(
+        'checks/<int:printer_id>/download/',
+        view_new_checks.NewChecks.as_view()
+    ),
 ]

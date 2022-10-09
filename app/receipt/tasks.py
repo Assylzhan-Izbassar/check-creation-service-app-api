@@ -37,5 +37,13 @@ def create_pdf_file(check_id):
     with open(file_dir, 'wb+') as f:
         f.write(response.content)
 
-    check.pdf_file.name = file_dir
+    check.pdf_file.name = 'pdf/{}.pdf'.format(file_name)
     check.save()
+
+
+@shared_task
+def send_to_print(printer_id):
+    checks = Check.objects.filter(printer_id=printer_id, status='P')
+    for check in list(checks):
+        check.status = 'C'
+        check.save()

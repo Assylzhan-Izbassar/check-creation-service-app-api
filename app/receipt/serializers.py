@@ -26,12 +26,7 @@ class CheckSerializer(serializers.ModelSerializer):
             'type',
             'order',
             'status',
-            'pdf_path',
+            'pdf_file',
             'printer_id',
         ]
         read_only_fields = ('pdf_file',)
-
-    pdf_path = serializers.SerializerMethodField(method_name='get_path_name')
-
-    def get_path_name(self, check: Check):
-        return check.pdf_file.name

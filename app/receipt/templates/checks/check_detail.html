@@ -4,10 +4,55 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Check</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'receipt/style.css' %}">
 </head>
 <body>
-    <h1>Check {{ check.id }}</h1>
-    <p>{{ check.type }}</p>
+    <div class="wrapper">
+        <div class="check">
+            <!-- HEADER -->
+            <div class="check__header">
+                <h1>Check #{{check.id}}</h1>
+                <p>Buy one get one free 6 piece nuggets or egg</p>
+                <div class="check__item">
+                    <h3>Date</h3>
+                    <p>{{ check.order.created_at }}</p>
+                </div>
+            </div>
+            <!-- PRODUCTS -->
+            <div class="check__body">
+
+                <ol class="check__products">
+                {% for product in check.order.products %}
+                    <li class="check__item">
+                        <p>{{ product.name }}</p>
+                        <p>{{ product.price }} $</p>
+                    </li>
+                {% endfor %}
+                </ol>
+            </div>
+
+            <!-- SUBTOTAL PRICE -->
+            <div class="check__subtotal">
+                <div class="check__item">
+                    <h4>Subtotal</h4>
+                    <p>{{ check.order.subtotal_price }} $</p>
+                </div>
+                <div class="check__item check__item_left-margin">
+                    <h4>Tax (5.3%)</h4>
+                    <p>{{ check.order.tax_price }} $</p>
+                </div>
+            </div>
+
+            <!-- TOTAL PRICE -->
+            <div class="check__total">
+                <div class="check__item">
+                    <h4>Total</h4>
+                    <p>{{ check.order.total_price }} $</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
