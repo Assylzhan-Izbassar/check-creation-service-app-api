@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'core',
     'receipt',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = 'redis://redis:6379/1'
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
