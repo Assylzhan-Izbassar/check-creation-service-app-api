@@ -28,6 +28,6 @@ class ReceiveOrder(APIView):
                 order=order,
                 printer_id=printer,
             )
-            create_pdf_file.apply_async((new_check.id,))
+            create_pdf_file.apply_async((new_check.id, ))
 
         return Response(status=status.HTTP_201_CREATED)
