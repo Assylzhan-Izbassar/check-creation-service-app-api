@@ -1,2 +1,2 @@
-from . import view_models # noqa
-from . import view_receive # noqa
+from . import view_models, \
+    view_receive, view_new_checks # noqa
