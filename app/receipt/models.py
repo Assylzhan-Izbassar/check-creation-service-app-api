@@ -28,6 +28,9 @@ class Printer(models.Model):
     def __str__(self):
         return self.name + ' ' + self.api_key
 
+    class Meta:
+        ordering = ['name']
+
 
 class Check(models.Model):
     PRINTED_STATUS_PENDING = 'P'
@@ -64,3 +67,9 @@ class Check(models.Model):
         null=True,
         on_delete=models.SET_NULL,
     )
+
+    def __str__(self):
+        return self.id + ' ' + self.status + ' ' + self.printer_id
+
+    class Meta:
+        ordering = ['id']
