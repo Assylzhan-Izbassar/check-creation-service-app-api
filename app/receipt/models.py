@@ -1,6 +1,7 @@
 """
 Creating base models for receipt API.
 """
+import json
 from django.db import models
 from uuid import uuid4
 
@@ -44,13 +45,16 @@ class Check(models.Model):
         choices=CHECK_TYPE_CHOICES,
         default=CHECK_TYPE_CLIENT
     )
-    order = models.JSONField()
+    order = models.JSONField(
+        encoder=json.JSONEncoder,
+        decoder=json.JSONDecoder
+    )
     status = models.CharField(
         max_length=1,
         choices=PRINTED_STATUS_CHOICES,
         default=PRINTED_STATUS_PENDING,
     )
-    pdf_file = models.FileField()
+    pdf_file = models.FileField(null=True, blank=True)
     printer_id = models.ForeignKey(
         Printer,
         null=True,
