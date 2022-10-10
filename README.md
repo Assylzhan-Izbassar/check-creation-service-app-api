@@ -1,2 +1,56 @@
-# check-creation-service-app-api
-Django project for creating receipts for orders.
+# Сервіс створення чеків
+## Налаштування проекту
+
+Нам потрібно налаштувати програму для правильної роботи.
+
+### Встановити змінні середовища
+Щоб безпечно взаємодіяти з проектом, нам потрібно додати кілька змінних середовищ у файл .env.
+
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASSWORD`
+- `PGADMIN_DEFAULT_EMAIL`
+- `PGADMIN_DEFAULT_PASSWORD`
+- `WK_HOST`
+- `WK_PORT`
+
+Потрібні ключі можна знайти у автора проекту.
+
+## Запуск проекту
+
+Для запуску проекту вам необхідно встановити `docker`, після чого написати команду у командному рядку у папці проекту
+
+```bash
+docker build .
+docker-compose run --rm app sh -c "python manage.py makemigrations"
+docker-compose up --build
+```
+
+Відкрийте [http://localhost:8000](http://localhost:8000), щоб переглянути його проект у браузері.
+
+Команда `docker-compose up --build` запускає проект із міграцією. Усі необхідні залежності проекту прописані у файлі [requirements.txt](https://github.com/Assylzhan-Izbassar/check-creation-service-app-api/blob/main/requirements.txt).
+
+## Документація з API
+
+Повну документацію проекту можна переглянути запустивши проект і перейти на [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/). URL відкриє документацію у Swagger UI. </br>
+
+## Основні кінцеві точки проекту
+
+Основні endpoints по проекту з методами `GET`, `POST`, `PUT`, `PATCH` та `DELETE`</br>
+
+- `http://127.0.0.1:8000/api/docs/` - документація проекту
+
+#### Кінцеві точки для чека
+
+- `http://127.0.0.1:8000/receipt/checks/` - для перегляду списку чеків та створення нового чека </br>
+- `http://127.0.0.1:8000/receipt/checks/{id}/` - для перегляду деталі чека, оновлення даних або видалення
+
+#### Кінцеві точки для принтера
+
+- `http://127.0.0.1:8000/receipt/printers/` - для перегляду списку принерів та створення нового принтера </br>
+- `http://127.0.0.1:8000/receipt/printers/{id}` - для перегляду деталей принтера, оновлення даних або видалення
+
+#### Додаткові кінцеві точки
+
+- `http://127.0.0.1:8000/admin/` - сторінка адміну
+- `http://127.0.0.1:5050/` - сервер pgadmin
